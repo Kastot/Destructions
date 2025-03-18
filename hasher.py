@@ -1,5 +1,22 @@
 import os
 import hashlib
+import sys
+import ctypes
+import subprocess
+
+subprocess.check_call[{sys.executable + ' -m pip install hashlib'}]
+subprocess.check_call[{sys.executable + ' -m pip install sys'}]
+subprocess.check_call[{sys.executable + ' -m pip install ctypes'}]
+subprocess.check_call[{sys.executable + ' -m pip install os'}]
+
+
+def is_admin():
+    return ctypes.windll.shell32.IsUserAnAdmin() != 0
+
+if not is_admin():
+   ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
+sys.exit()
+
 
 def hash_file(filepath, hash_type="sha256"):
     """Hashes a file and overwrites it with the hash."""
